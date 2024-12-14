@@ -8,8 +8,8 @@ import SubmitButton from '@/components/SubmitButton.vue'
 const store = useStore();
 const router = useRouter();
 
-const email = ref('pabloeliezer@hotmail.com')
-const password = ref('password')
+const email = ref('')
+const password = ref('')
 
 const isLoading = computed(() => store.state.auth.loading);
 const error = computed(() => store.state.auth.error);

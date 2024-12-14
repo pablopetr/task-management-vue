@@ -82,7 +82,7 @@ export const authModule = {
           },
         });
 
-        commit('SET_USER', response.data.data);
+        commit('SET_USER', response.data);
 
         return response.data;
       } catch(error: any) {

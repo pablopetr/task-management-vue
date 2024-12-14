@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+import { computed } from 'vue'
+import IconExclamation from '@/components/icons/IconExclamation.vue'
+
 const props = defineProps({
   id: String,
   name: String,
@@ -7,10 +10,18 @@ const props = defineProps({
   type: String,
   modelValue: String,
   placeholder: String,
-  description: String
+  description: String,
+  errors: Object,
 });
 
 const emit = defineEmits(['update:modelValue'])
+const hasError = computed(() => {
+  return props.errors?.errors ? props.errors?.errors[props.name][0] : null;
+});
+
+const error = computed(() => {
+  return props.errors?.errors[props.name][0]
+})
 
 </script>
 
@@ -20,10 +31,10 @@ const emit = defineEmits(['update:modelValue'])
       {{ label }}
     </label>
     <div class="mt-2">
-      <div>
+      <div class="mt-2 grid grid-cols-1">
         <input
-          :id="name"
-          :type="name"
+          :id="id"
+          :type="type"
           :name="name"
           :value="props.modelValue"
           @input="emit('update:modelValue', $event.target.value)"
@@ -33,7 +44,11 @@ const emit = defineEmits(['update:modelValue'])
           placeholder="you@example.com"
           aria-describedby="email-description"
         >
+        <IconExclamation v-if="hasError" class="text-red-500" />
       </div>
+    </div>
+    <div v-if="hasError">
+      <p class="text-sm text-red-500">{{ error }}</p>
     </div>
     <p v-if="description" class="mt-2 text-sm text-gray-500" id="email-description">
       {{ description }}

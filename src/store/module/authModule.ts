@@ -9,6 +9,7 @@ export const authModule = {
     user: null,
     loading: false,
     error: null,
+    errors: null,
   },
   getters: {
     isAuthenticated(state, any) {
@@ -38,6 +39,9 @@ export const authModule = {
     },
     SET_ERROR(state, error) {
       state.error = error;
+    },
+    SET_ERRORS(state, errors) {
+      state.errors = errors;
     }
   },
   actions: {
@@ -57,6 +61,7 @@ export const authModule = {
         return response.data;
       } catch(error: unknown) {
         commit('SET_ERROR', error.response?.data?.message || 'Login failed')
+        commit('SET_ERRORS', error.response?.data)
 
         throw error;
       } finally {

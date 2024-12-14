@@ -1,19 +1,28 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import TextInput from '@/components/input/TextInput.vue'
-import { ref } from 'vue'
 import SubmitButton from '@/components/SubmitButton.vue'
-import { login } from '../services/authService.ts';
 
-const email = ref('')
-const password = ref('')
+const store = useStore();
+const router = useRouter();
+
+const email = ref('pabloeliezer@hotmail.com')
+const password = ref('password')
+
+const isLoading = computed(() => store.state.auth.loading);
+const error = computed(() => store.state.auth.error);
 
 const handleSubmit = async () => {
-  try {
-    const token = await login(email.value, password.value)
+  if(isLoading.value) return;
 
-    localStorage.setItem('jwt', token);
-  } catch(error) {
-    console.log(error);
+  try {
+    await store.dispatch('auth/login', { email: email.value, password: password.value });
+
+    await router.push({ name: 'profile' })
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -42,11 +51,8 @@ const handleSubmit = async () => {
     </div>
 
     <SubmitButton @click="handleSubmit">
-      Login
+      <div v-if="!isLoading">Submit</div>
+      <div v-else>Loading...</div>
     </SubmitButton>
   </form>
 </template>
-
-<style scoped>
-
-</style>

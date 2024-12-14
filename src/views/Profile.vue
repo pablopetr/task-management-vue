@@ -1,24 +1,41 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+import { onMounted, computed, ref } from 'vue'
+import { useStore } from 'vuex';
+import router from '@/router';
 
-import { onMounted, ref } from 'vue'
-import { me } from '@/services/userService';
+const store = useStore();
+const loading = ref(true);
+const user = computed(() => store.state.auth.user);
 
-const user = ref()
+const logout = () => {
+  store.dispatch('auth/logout');
+  router.push({ name: 'login' });
+};
 
 onMounted(async () => {
-  const response = await me()
-
-  user.value = response.data
-})
-
+  try {
+    await store.dispatch('auth/fetchUser');
+  } catch (err) {
+    console.error('Failed to fetch user:', err);
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <template>
-  <div v-if="user">
-    <h1>Hello, {{ user.name }}</h1>
+  <div>
+    <h1 class="font-bold text-2xl">User Profile</h1>
+    <div v-if="loading">
+      <p>Loading...</p> <!-- Show loading state -->
+    </div>
+    <div v-else-if="user">
+      <p>{{ user.name }}</p>
+      <p>{{ user.email }}</p>
+      <button @click="logout">Logout</button>
+    </div>
+    <div v-else>
+      <p>No user found.</p>
+    </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

@@ -1,4 +1,5 @@
 import { useStore } from 'vuex';
+
 export default function authMiddleware(
   to,
   from,

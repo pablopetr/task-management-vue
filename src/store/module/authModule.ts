@@ -2,6 +2,18 @@ import axios from 'axios'
 
 const API_URL = 'http://localhost/api'
 
+interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
 export const authModule = {
   namespaced: true,
   state: {
@@ -45,6 +57,27 @@ export const authModule = {
     }
   },
   actions: {
+    async register(
+      { commit },
+      { name, email, password, password_confirmation }: RegisterPayload
+    ) {
+      commit('SET_LOADING', true);
+      commit('SET_ERROR', null);
+
+      try {
+        const response = await axios.post(`${API_URL}/register`, { name, email, password, password_confirmation });
+
+
+        return response;
+      } catch(error) {
+        if(error.response.data.errors) {
+          commit('SET_ERRORS', error.response.data);
+        }
+      } finally {
+        commit('SET_LOADING', false);
+      }
+    },
+
     async login(
       { commit },
       { email, password }: LoginPayload,

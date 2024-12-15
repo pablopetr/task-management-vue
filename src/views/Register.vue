@@ -37,7 +37,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
     <TextInput
       id="name"
       name="name"
@@ -77,6 +77,9 @@ const handleSubmit = async () => {
         <div v-if="!isLoading">Register</div>
         <div v-else>Loading...</div>
       </SubmitButton>
+    </div>
+    <div>
+      <RouterLink to="/login" class="text-sm text-blue-500">Already have an account? Login</RouterLink>
     </div>
   </form>
 </template>

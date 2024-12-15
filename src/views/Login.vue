@@ -53,5 +53,8 @@ const handleSubmit = async () => {
         <div v-else>Loading...</div>
       </SubmitButton>
     </div>
+    <div>
+      <RouterLink to="/register" class="text-sm text-blue-500">Don't have an account? Register</RouterLink>
+    </div>
   </form>
 </template>

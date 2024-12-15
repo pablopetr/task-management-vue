@@ -1,14 +1,21 @@
-import { mount } from '@vue/test-utils'
-import Vuex from 'vuex'
-import { createRouter, createWebHistory } from 'vue-router'
+import { mount, VueWrapper } from '@vue/test-utils'
+import Vuex, { Store } from 'vuex'
+import { createRouter, createWebHistory, Router } from 'vue-router'
 import Login from '@/views/auth/Login.vue'
 import { describe, it, beforeEach, vi, expect } from 'vitest'
 
+interface State {
+  auth: {
+    loading: boolean;
+    errors: Record<string, string>;
+  };
+}
+
 describe('View Login', () => {
-  let store: Vuex.Store<any>;
-  let actions: any;
-  let state: any;
-  let router: any;
+  let store: Store<State>;
+  let actions: { [key: string]: vi.Mock };
+  let state: State;
+  let router: Router;
 
   beforeEach(() => {
     state = {
@@ -34,7 +41,7 @@ describe('View Login', () => {
   })
 
   it('renders correctly', () => {
-    const wrapper = mount(Login, {
+    const wrapper: VueWrapper = mount(Login, {
       global: {
         plugins: [store, router]
       }
@@ -44,7 +51,7 @@ describe('View Login', () => {
   })
 
   it('dispatches auth/login action with correct payload on form submit', async () => {
-    const wrapper = mount(Login, {
+    const wrapper: VueWrapper = mount(Login, {
       global: {
         plugins: [store, router]
       }

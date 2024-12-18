@@ -30,7 +30,25 @@ const router = createRouter({
       name: 'profile',
       component: () => import('../views/Profile.vue'),
       beforeEnter: () => authMiddleware,
-    }
+    },
+    {
+      path: '/tasks',
+      name: 'tasks.index',
+      component: () => import('../views/tasks/Index.vue'),
+      beforeEnter: () => authMiddleware,
+    },
+    {
+      path: '/tasks/create',
+      name: 'tasks.create',
+      component: () => import('../views/tasks/Create.vue'),
+      beforeEnter: () => authMiddleware,
+    },
+    {
+      path: '/tasks/:id/edit',
+      name: 'tasks.edit',
+      component: () => import('../views/tasks/Edit.vue'),
+      beforeEnter: () => authMiddleware,
+    },
   ],
 })
 

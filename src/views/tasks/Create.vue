@@ -2,6 +2,7 @@
 import TextInput from '@/components/input/TextInput.vue'
 import { ref } from 'vue'
 import SubmitButton from '@/components/SubmitButton.vue'
+import.meta.env
 
 const title = ref('')
 const description = ref('')

@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost/api'
-
 interface LoginPayload {
   email: string;
   password: string;
@@ -114,7 +112,7 @@ export const authModule = {
       commit('SET_ERROR', null);
 
       try {
-        const response = await axios.get(`${API_URL}/me`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/me`, {
           headers: {
             Authorization: `Bearer ${state.token}`
           },

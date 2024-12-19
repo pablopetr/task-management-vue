@@ -24,6 +24,7 @@ const handleSubmit = async () => {
       await router.push({ name: 'profile' })
     }
   } catch (err) {
+    console.log(err);
   }
 }
 

@@ -63,7 +63,10 @@ export const authModule = {
       commit('SET_ERROR', null);
 
       try {
-        const response = await axios.post(`${API_URL}/register`, { name, email, password, password_confirmation });
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/register`,
+          { name, email, password, password_confirmation }
+        );
 
 
         return response;
@@ -84,7 +87,7 @@ export const authModule = {
       commit('SET_ERROR', null);
 
       try {
-        const response = await axios.post(`${API_URL}/login`, { email, password});
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, { email, password});
 
         commit('SET_TOKEN', response.data.token);
         commit('SET_USER', null);

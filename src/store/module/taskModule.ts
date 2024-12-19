@@ -51,6 +51,7 @@ export const taskModule = {
     },
     async store({ commit }, payload) {
       commit('SET_LOADING', true);
+
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, payload);
         commit('SET_TASK', response.data.data);

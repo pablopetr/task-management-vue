@@ -26,11 +26,8 @@ onMounted(async () => {
 <template>
   <div>
     <h1 class="font-bold text-2xl">User Profile</h1>
-    <div>
-      <router-link to="/tasks">Tasks</router-link>
-    </div>
     <div v-if="loading">
-      <p>Loading...</p> <!-- Show loading state -->
+      <p>Loading...</p>
     </div>
     <div v-else-if="user">
       <p>{{ user.name }}</p>

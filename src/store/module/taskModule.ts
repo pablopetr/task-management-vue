@@ -38,10 +38,14 @@ export const taskModule = {
     }
   },
   actions: {
-    async index({ commit }) {
+    async index({ commit, rootState }) {
       commit('SET_LOADING', true);
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`, {
+          headers: {
+            Authorization: `Bearer ${rootState.auth.token}`,
+          },
+        });
         commit('SET_TASKS', response.data.data);
       } catch (error) {
         commit('SET_ERROR', error.response.data.message);
@@ -49,13 +53,59 @@ export const taskModule = {
         commit('SET_LOADING', false);
       }
     },
-    async store({ commit }, payload) {
+    async store({ commit, rootState }, payload) {
       commit('SET_LOADING', true);
 
       try {
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, payload);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, payload, {
+          headers: {
+            Authorization: `Bearer ${rootState.auth.token}`,
+          },
+        });
         commit('SET_TASK', response.data.data);
       } catch (error) {
+        commit('SET_ERROR', error.response.data.message);
+        commit('SET_ERRORS', error.response.data.errors);
+      } finally {
+        commit('SET_LOADING', false);
+      }
+    },
+
+    async show({ commit, rootState }, id) {
+      commit('SET_LOADING', true);
+
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
+          headers: {
+            Authorization: `Bearer ${rootState.auth.token}`,
+          }
+        });
+
+        commit('SET_TASK', response.data);
+
+      } catch (error) {
+        commit('SET_ERROR', error.response.data.message);
+      }
+      finally {
+        commit('SET_LOADING', false);
+      }
+    },
+
+    async update({ commit, rootState }, payload) {
+      commit('SET_LOADING', true);
+
+      console.log(payload);
+
+      try {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${payload.id}`, payload, {
+          headers: {
+            Authorization: `Bearer ${rootState.auth.token}`,
+          },
+        });
+        commit('SET_TASK', response.data.data);
+      } catch (error) {
+        console.log(error);
+
         commit('SET_ERROR', error.response.data.message);
         commit('SET_ERRORS', error.response.data.errors);
       } finally {

@@ -80,7 +80,7 @@ export const authModule = {
     },
 
     async login(
-      { commit },
+      { commit, dispatch },
       { email, password }: LoginPayload,
     ) {
       commit('SET_LOADING', true);
@@ -92,7 +92,7 @@ export const authModule = {
         commit('SET_TOKEN', response.data.token);
         commit('SET_USER', null);
 
-        return response.data;
+        await dispatch('fetchUser');
       } catch(error: unknown) {
         commit('SET_ERROR', error.response?.data?.message || 'Login failed')
         commit('SET_ERRORS', error.response?.data)
